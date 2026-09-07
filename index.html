@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aurelia Spa — Elite Wellness Sanctuary</title>
+<meta name="description" content="Aurelia Spa — an elite wellness sanctuary offering bespoke massage, facial, hydrotherapy and private suite experiences." />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: '#0D0F12',
+          slate: '#14171D',
+          slate2: '#1B1F27',
+          gold: '#D4AF37',
+          gold2: '#E5C158',
+          mist: '#9CA3AF',
+        },
+        fontFamily: {
+          serif: ['"Playfair Display"', 'serif'],
+          sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+<style>
+  * { scroll-behavior: smooth; }
+  body {
+    background-color: #0D0F12;
+    color: #E7E5E0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  h1, h2, h3, .font-display { font-family: 'Playfair Display', serif; }
+
+  ::selection { background: #D4AF37; color: #0D0F12; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #0D0F12; }
+  ::-webkit-scrollbar-thumb { background: #2A2E37; border-radius: 4px; }
+
+  .glass {
+    background: rgba(20, 23, 29, 0.55);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(212, 175, 55, 0.12);
+  }
+
+  .radial-glow {
+    background: radial-gradient(circle at 50% 20%, rgba(212,175,55,0.16) 0%, rgba(212,175,55,0.04) 35%, rgba(13,15,18,0) 65%);
+  }
+
+  .gold-text {
+    background: linear-gradient(120deg, #D4AF37, #F2DE9C 45%, #D4AF37);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hairline { border-color: rgba(212,175,55,0.18); }
+
+  .btn-gold {
+    background: linear-gradient(135deg, #D4AF37, #B8912C);
+    color: #0D0F12;
+    transition: transform .35s ease, box-shadow .35s ease, background .35s ease;
+  }
+  .btn-gold:hover {
+    box-shadow: 0 10px 30px -6px rgba(212,175,55,0.5);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    border: 1px solid rgba(212,175,55,0.4);
+    color: #E5C158;
+    transition: all .35s ease;
+  }
+  .btn-outline:hover {
+    background: rgba(212,175,55,0.08);
+    border-color: #D4AF37;
+  }
+
+  .service-card {
+    transition: transform .45s cubic-bezier(.22,1,.36,1), border-color .45s ease, background .45s ease;
+  }
+  .service-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(212,175,55,0.45);
+  }
+
+  .nav-link {
+    position: relative;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -4px;
+    width: 0%;
+    height: 1px;
+    background: #D4AF37;
+    transition: width .35s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  .mobile-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .5s ease;
+  }
+  .mobile-menu.open { max-height: 480px; }
+
+  input, select, textarea {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.09);
+    transition: border-color .3s ease, background .3s ease;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #D4AF37;
+    background: rgba(212,175,55,0.04);
+  }
+
+  .field-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: #9CA3AF;
+  }
+
+  .divider-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,175,55,0.4), transparent);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-anim > * {
+    opacity: 0;
+    animation: fadeUp .9s ease forwards;
+  }
+  .hero-anim > *:nth-child(1) { animation-delay: .05s; }
+  .hero-anim > *:nth-child(2) { animation-delay: .2s; }
+  .hero-anim > *:nth-child(3) { animation-delay: .35s; }
+  .hero-anim > *:nth-child(4) { animation-delay: .5s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  .btc-qr-frame {
+    background: #fff;
+    padding: 14px;
+    border-radius: 4px;
+  }
+
+  .copy-toast {
+    transition: opacity .3s ease, transform .3s ease;
+  }
+
+  select option { background-color: #14171D; color: #E7E5E0; }
+</style>
+</head>
+
+<body class="antialiased">
+
+<!-- ============ NAVBAR ============ -->
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 glass">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+    <a href="#top" class="font-serif text-xl md:text-2xl tracking-wide text-[#F2EFE9]">
+      AURELIA <span class="gold-text">SPA</span>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-10 text-sm text-[#C9CDD3]">
+      <a href="#services" class="nav-link hover:text-[#E5C158]">Services</a>
+      <a href="#experience" class="nav-link hover:text-[#E5C158]">Experience</a>
+      <a href="#bitcoin-vip" class="nav-link hover:text-[#E5C158]">Bitcoin VIP</a>
+      <a href="#booking" class="nav-link hover:text-[#E5C158]">Booking</a>
+      <a href="#contact" class="nav-link hover:text-[#E5C158]">Contact</a>
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <a href="#booking" class="hidden md:inline-flex btn-gold rounded-sm px-6 py-2.5 text-sm font-semibold tracking-wide">
+        Book Appointment
+      </a>
+      <button id="menuToggle" class="lg:hidden text-[#E5C158]" aria-label="Toggle menu">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" class="mobile-menu lg:hidden border-t hairline">
+    <div class="flex flex-col px-6 py-4 gap-4 text-[#C9CDD3] text-sm">
+      <a href="#services" class="mobile-link">Services</a>
+      <a href="#experience" class="mobile-link">Experience</a>
+      <a href="#bitcoin-vip" class="mobile-link">Bitcoin VIP</a>
+      <a href="#booking" class="mobile-link">Booking</a>
+      <a href="#contact" class="mobile-link">Contact</a>
+      <a href="#booking" class="btn-gold rounded-sm px-5 py-2.5 text-center font-semibold text-sm mt-2">Book Appointment</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="top" class="relative pt-40 pb-28 md:pt-52 md:pb-36 radial-glow overflow-hidden">
+  <div class="absolute inset-0 opacity-[0.04]" style="background-image: radial-gradient(circle, #D4AF37 1px, transparent 1px); background-size: 34px 34px;"></div>
+
+  <div class="relative max-w-5xl mx-auto px-6 text-center hero-anim">
+    <p class="text-[#C6A64E] text-xs tracking-[0.25em] mb-6">A Sanctuary for the Discerning</p>
+    <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] text-[#F5F2EB]">
+      Elevate Your Mind,<br class="hidden sm:block"/> Body <span class="gold-text">&amp; Spirit</span>
+    </h1>
+    <p class="mt-7 text-[#A8ADB6] text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+      Aurelia Spa is a private wellness retreat where ancient ritual meets modern refinement — bespoke treatments, discreet suites, and uncompromising care.
+    </p>
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="#services" class="btn-gold rounded-sm px-8 py-3.5 text-sm font-semibold tracking-wide w-full sm:w-auto text-center">
+        Explore Treatments
+      </a>
+      <a href="#booking" class="btn-outline rounded-sm px-8 py-3.5 text-sm font-semibold tracking-wide w-full sm:w-auto text-center">
+        Reserve Experience
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="max-w-7xl mx-auto px-6"><div class="divider-line"></div></div>
+
+<!-- ============ SERVICES ============ -->
+<section id="services" class="py-24 md:py-32">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="max-w-2xl mb-16">
+      <p class="text-[#C6A64E] text-xs tracking-[0.25em] mb-4">Curated Offerings</p>
+      <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl text-[#F5F2EB] leading-tight">The Service Menu</h2>
+      <p class="mt-4 text-[#9CA3AF] leading-relaxed">Every ritual is performed by senior therapists using rare botanical actives, warmed marble, and time-honored technique.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <!-- Card 1 -->
+      <div class="service-card glass rounded-md p-7 flex flex-col border border-transparent">
+        <div class="w-11 h-11 rounded-full flex items-center justify-center bg-[#D4AF37]/10 mb-6">
+          <i data-lucide="hand" class="w-5 h-5 text-[#E5C158]"></i>
+        </div>
+        <h3 class="font-serif text-xl text-[#F5F2EB] mb-2">Deep Tissue &amp; Aromatherapy Massage</h3>
+        <p class="text-sm text-[#9CA3AF] leading-relaxed mb-5 flex-1">Targeted muscular release paired with hand-blended essential oils to restore circulation and calm the nervous system.</p>
+        <ul class="text-xs text-[#9CA3AF] space-y-1.5 mb-6">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#D4AF37]"></i>Eases chronic tension</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#D4AF37]"></i>Custom oil blend</li>
+        </ul>
+        <div class="flex items-center justify-between border-t hairline pt-4 mt-auto">
+          <div>
+            <p class="text-[#F5F2EB] font-semibold text-sm">From $220</p>
+            <p class="text-xs text-[#7C828C]">75 minutes</p>
+          </div>
+          <a href="#booking" class="text-xs font-semibold text-[#E5C158] hover:text-[#F2DE9C] flex items-center gap-1">
+            Inquire <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="service-card glass rounded-md p-7 flex flex-col border border-transparent">
+        <div class="w-11 h-11 rounded-full flex items-center justify-center bg-[#D4AF37]/10 mb-6">
+          <i data-lucide="sparkles" class="w-5 h-5 text-[#E5C158]"></i>
+        </div>
+        <h3 class="font-serif text-xl text-[#F5F2EB] mb-2">Rejuvenating Facial Treatments</h3>
+        <p class="text-sm text-[#9CA3AF] leading-relaxed mb-5 flex-1">Advanced cellular renewal facials layering gold-infused serums, cold stone therapy, and gentle lymphatic drainage.</p>
+        <ul class="text-xs text-[#9CA3AF] space-y-1.5 mb-6">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#D4AF37]"></i>Visible radiance</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#D4AF37]"></i>Suits all skin types</li>
+        </ul>
+        <div class="flex items-center justify-between border-t hairline pt-4 mt-auto">
+          <div>
+            <p class="text-[#F5F2EB] font-semibold text-sm">From $260</p>
+            <p class="text-xs text-[#7C828C]">60 minutes</p>
+          </div>
+          <a href="#booking" class="text-xs font-semibold text-[#E5C158] hover:text-[#F2DE9C] flex items-center gap-1">
+            Inquire <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="service-card glass rounded-md p-7 flex flex-col border border-transparent">
+        <div class="w-11 h-11 rounded-full flex items-center justify-center bg-[#D4AF37]/10 mb-6">
+          <i data-lucide="waves" class="w-5 h-5 text-[#E5C158]"></i>
+        </div>
+        <h3 class="font-serif text-xl text-[#F5F2EB] mb-2">Full-Body Detox &amp; Hydrotherapy</h3>
+        <p class="text-sm text-[#9CA3AF] leading-relaxed mb-5 flex-1">A three-stage ritual of steam, mineral immersion, and dry-brush exfoliation that clears the body of tension and toxins.</p>
+        <ul class="text-xs text-[#9CA3AF] space-y-1.5 mb-6">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#D4AF37]"></i>Mineral-rich soak</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#D4AF37]"></i>Full detox cycle</li>
+        </ul>
+        <div class="flex items-center justify-between border-t hairline pt-4 mt-auto">
+          <div>
+            <p class="text-[#F5F2EB] font-semibold text-sm">From $310</p>
+            <p class="text-xs text-[#7C828C]">90 minutes</p>
+          </div>
+          <a href="#booking" class="text-xs font-semibold text-[#E5C158] hover:text-[#F2DE9C] flex items-center gap-1">
+            Inquire <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="service-card glass rounded-md p-7 flex flex-col border border-[#D4AF37]/30 relative">
+        <span class="absolute -top-3 right-6 text-[10px] tracking-widest bg-[#D4AF37] text-[#0D0F12] font-bold px-3 py-1 rounded-sm">VIP</span>
+        <div class="w-11 h-11 rounded-full flex items-center justify-center bg-[#D4AF37]/10 mb-6">
+          <i data-lucide="door-closed" class="w-5 h-5 text-[#E5C158]"></i>
+        </div>
+        <h3 class="font-serif text-xl text-[#F5F2EB] mb-2">VIP Private Spa Suites</h3>
+        <p class="text-sm text-[#9CA3AF] leading-relaxed mb-5 flex-1">A fully private suite with dedicated therapist, personal lounge, and curated multi-treatment itinerary from arrival to departure.</p>
+        <ul class="text-xs text-[#9CA3AF] space-y-1.5 mb-6">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#D4AF37]"></i>Dedicated suite</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#D4AF37]"></i>Priority scheduling</li>
+        </ul>
+        <div class="flex items-center justify-between border-t hairline pt-4 mt-auto">
+          <div>
+            <p class="text-[#F5F2EB] font-semibold text-sm">From $650</p>
+            <p class="text-xs text-[#7C828C]">3 hour itinerary</p>
+          </div>
+          <a href="#bitcoin-vip" class="text-xs font-semibold text-[#E5C158] hover:text-[#F2DE9C] flex items-center gap-1">
+            Reserve <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section id="experience" class="py-24 md:py-32 bg-[#0A0C0F] border-y hairline">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-16 items-center">
+    <div>
+      <p class="text-[#C6A64E] text-xs tracking-[0.25em] mb-4">Inside Aurelia</p>
+      <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl text-[#F5F2EB] leading-tight mb-6">An Experience Designed Around You</h2>
+      <p class="text-[#9CA3AF] leading-relaxed mb-6">From the moment you arrive, every detail — lighting, temperature, scent, sound — is tuned to your preference. Our therapists are trained across Balinese, Swedish, and traditional Japanese modalities, blended into a single, personalized session.</p>
+      <p class="text-[#9CA3AF] leading-relaxed mb-10">Private entrances, flexible scheduling, and a strict confidentiality policy mean your visit remains entirely your own.</p>
+
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <p class="font-serif text-3xl text-[#E5C158]">18+</p>
+          <p class="text-xs text-[#7C828C] mt-1">Years of Practice</p>
+        </div>
+        <div>
+          <p class="font-serif text-3xl text-[#E5C158]">12</p>
+          <p class="text-xs text-[#7C828C] mt-1">Master Therapists</p>
+        </div>
+        <div>
+          <p class="font-serif text-3xl text-[#E5C158]">6</p>
+          <p class="text-xs text-[#7C828C] mt-1">Private Suites</p>
+        </div>
+        <div>
+          <p class="font-serif text-3xl text-[#E5C158]">4.9</p>
+          <p class="text-xs text-[#7C828C] mt-1">Guest Rating</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative">
+      <div class="glass rounded-md p-10 relative">
+        <i data-lucide="quote" class="w-8 h-8 text-[#D4AF37] mb-6"></i>
+        <p class="font-serif text-xl md:text-2xl text-[#F5F2EB] leading-relaxed italic">
+          "The most restorative hours of my week. Aurelia doesn't just treat the body — it resets everything around it."
+        </p>
+        <div class="mt-8 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-[#D4AF37]/20 flex items-center justify-center text-[#E5C158] font-serif">M</div>
+          <div>
+            <p class="text-sm text-[#F5F2EB]">Marguerite L.</p>
+            <p class="text-xs text-[#7C828C]">Member since 2021</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BITCOIN VIP ============ -->
+<section id="bitcoin-vip" class="py-24 md:py-32">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="max-w-2xl mb-14">
+      <p class="text-[#C6A64E] text-xs tracking-[0.25em] mb-4">Private Booking Gateway</p>
+      <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl text-[#F5F2EB] leading-tight">Reserve with Bitcoin</h2>
+      <p class="mt-4 text-[#9CA3AF] leading-relaxed">For guests booking VIP private suites, we accept Bitcoin deposits as a fast, secure way to confirm your reservation without exposing payment details to a third party.</p>
+    </div>
+
+    <div class="glass rounded-md p-8 md:p-12 grid lg:grid-cols-2 gap-12 items-center">
+
+      <!-- Instructions -->
+      <div>
+        <h3 class="font-serif text-2xl text-[#F5F2EB] mb-6">How It Works</h3>
+        <ol class="space-y-5">
+          <li class="flex gap-4">
+            <span class="w-7 h-7 shrink-0 rounded-full border border-[#D4AF37]/40 text-[#E5C158] text-xs flex items-center justify-center font-semibold">1</span>
+            <p class="text-sm text-[#9CA3AF] leading-relaxed">Select your VIP Private Suite package and preferred date via the booking form below.</p>
+          </li>
+          <li class="flex gap-4">
+            <span class="w-7 h-7 shrink-0 rounded-full border border-[#D4AF37]/40 text-[#E5C158] text-xs flex items-center justify-center font-semibold">2</span>
+            <p class="text-sm text-[#9CA3AF] leading-relaxed">Send your deposit to the wallet address provided, using the QR code or copy button.</p>
+          </li>
+          <li class="flex gap-4">
+            <span class="w-7 h-7 shrink-0 rounded-full border border-[#D4AF37]/40 text-[#E5C158] text-xs flex items-center justify-center font-semibold">3</span>
+            <p class="text-sm text-[#9CA3AF] leading-relaxed">Our concierge will confirm receipt and finalize your reservation by email within a few hours.</p>
+          </li>
+        </ol>
+
+        <div class="mt-8 flex items-start gap-3 border-t hairline pt-6">
+          <i data-lucide="shield-check" class="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5"></i>
+          <p class="text-xs text-[#7C828C] leading-relaxed">Deposits are fully credited toward your final treatment cost. Always verify the wallet address carefully before sending funds — transactions on the blockchain cannot be reversed.</p>
+        </div>
+      </div>
+
+      <!-- Wallet + QR -->
+      <div class="flex flex-col items-center gap-6">
+        <div class="btc-qr-frame">
+          <img src="BTC_qr-code.svg" alt="Bitcoin wallet QR code" class="w-40 h-40 md:w-48 md:h-48" />
+        </div>
+
+        <div class="w-full">
+          <p class="field-label text-center mb-2">BTC WALLET ADDRESS</p>
+          <div class="flex items-center gap-2 bg-black/30 border hairline rounded-sm px-4 py-3">
+            <code id="btcAddress" class="text-xs md:text-sm text-[#E5C158] break-all flex-1 select-all">bc1qgzz3apllchm2mwaw82ql6v5h9r5sdspvqfdl54</code>
+          </div>
+          <button id="copyBtnBtc" onclick="copyBtcAddress()" class="relative mt-3 w-full btn-gold rounded-sm py-3 text-sm font-semibold flex items-center justify-center gap-2">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+            <span id="copyLabel">Copy Address</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="max-w-7xl mx-auto px-6"><div class="divider-line"></div></div>
+
+<!-- ============ BOOKING FORM ============ -->
+<section id="booking" class="py-24 md:py-32">
+  <div class="max-w-4xl mx-auto px-6 lg:px-10">
+    <div class="text-center mb-14">
+      <p class="text-[#C6A64E] text-xs tracking-[0.25em] mb-4">Reserve Your Visit</p>
+      <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl text-[#F5F2EB] leading-tight">Request an Appointment</h2>
+      <p class="mt-4 text-[#9CA3AF] leading-relaxed max-w-xl mx-auto">Share your preferences below and our concierge will confirm your booking by email within 24 hours.</p>
+    </div>
+
+    <div class="glass rounded-md p-7 md:p-12">
+      <form id="bookingForm" class="space-y-6">
+        <input type="hidden" name="access_key" value="1e7e0ed2-fbbb-4823-b4fd-25fa9b34dd43">
+        <input type="hidden" name="subject" value="New Booking Request — Aurelia Spa">
+        <input type="checkbox" name="botcheck" class="hidden" style="display:none">
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="field-label" for="name">FULL NAME</label>
+            <input required type="text" id="name" name="name" placeholder="Jane Doe" class="w-full mt-2 rounded-sm px-4 py-3 text-sm text-[#F5F2EB] placeholder:text-[#5B616B]">
+          </div>
+          <div>
+            <label class="field-label" for="email">EMAIL ADDRESS</label>
+            <input required type="email" id="email" name="email" placeholder="jane@email.com" class="w-full mt-2 rounded-sm px-4 py-3 text-sm text-[#F5F2EB] placeholder:text-[#5B616B]">
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="field-label" for="phone">PHONE NUMBER</label>
+            <input required type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" class="w-full mt-2 rounded-sm px-4 py-3 text-sm text-[#F5F2EB] placeholder:text-[#5B616B]">
+          </div>
+          <div>
+            <label class="field-label" for="service">PREFERRED SERVICE</label>
+            <select required id="service" name="preferred_service" class="w-full mt-2 rounded-sm px-4 py-3 text-sm text-[#F5F2EB]">
+              <option value="" disabled selected>Select a service</option>
+              <option>Deep Tissue &amp; Aromatherapy Massage</option>
+              <option>Rejuvenating Facial Treatments</option>
+              <option>Full-Body Detox &amp; Hydrotherapy</option>
+              <option>VIP Private Spa Suites</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="field-label" for="datetime">PREFERRED DATE &amp; TIME</label>
+          <input required type="datetime-local" id="datetime" name="preferred_date_time" class="w-full mt-2 rounded-sm px-4 py-3 text-sm text-[#F5F2EB]">
+        </div>
+
+        <div>
+          <label class="field-label" for="notes">SPECIAL NOTES / REQUESTS</label>
+          <textarea id="notes" name="notes" rows="4" placeholder="Allergies, therapist preference, accessibility needs, etc." class="w-full mt-2 rounded-sm px-4 py-3 text-sm text-[#F5F2EB] placeholder:text-[#5B616B] resize-none"></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn" class="w-full btn-gold rounded-sm py-4 text-sm font-semibold tracking-wide flex items-center justify-center gap-2">
+          <span id="submitLabel">Submit Booking Request</span>
+        </button>
+
+        <div id="formResult" class="hidden text-center text-sm pt-2"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="contact" class="border-t hairline pt-20 pb-10">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 grid md:grid-cols-4 gap-12 mb-16">
+
+    <div>
+      <p class="font-serif text-xl text-[#F5F2EB] mb-4">AURELIA <span class="gold-text">SPA</span></p>
+      <p class="text-sm text-[#7C828C] leading-relaxed">A private wellness sanctuary devoted to restoring balance between mind, body, and spirit.</p>
+      <div class="flex items-center gap-3 mt-6">
+        <a href="#" aria-label="Instagram" class="w-9 h-9 rounded-full border hairline flex items-center justify-center text-[#9CA3AF] hover:text-[#E5C158] hover:border-[#D4AF37]/50 transition">
+          <i data-lucide="instagram" class="w-4 h-4"></i>
+        </a>
+        <a href="#" aria-label="Facebook" class="w-9 h-9 rounded-full border hairline flex items-center justify-center text-[#9CA3AF] hover:text-[#E5C158] hover:border-[#D4AF37]/50 transition">
+          <i data-lucide="facebook" class="w-4 h-4"></i>
+        </a>
+        <a href="#" aria-label="Twitter" class="w-9 h-9 rounded-full border hairline flex items-center justify-center text-[#9CA3AF] hover:text-[#E5C158] hover:border-[#D4AF37]/50 transition">
+          <i data-lucide="twitter" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <p class="text-xs tracking-[0.2em] text-[#7C828C] mb-5">QUICK LINKS</p>
+      <ul class="space-y-3 text-sm text-[#9CA3AF]">
+        <li><a href="#services" class="hover:text-[#E5C158] transition">Services</a></li>
+        <li><a href="#experience" class="hover:text-[#E5C158] transition">Experience</a></li>
+        <li><a href="#bitcoin-vip" class="hover:text-[#E5C158] transition">Bitcoin VIP</a></li>
+        <li><a href="#booking" class="hover:text-[#E5C158] transition">Booking</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="text-xs tracking-[0.2em] text-[#7C828C] mb-5">CONTACT</p>
+      <ul class="space-y-3 text-sm text-[#9CA3AF]">
+        <li class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-[#D4AF37]"></i> bookings.aureilaspa@gmail.com</li>
+        <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-[#D4AF37]"></i> 128 Wellness Row, Private District</li>
+        <li class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-[#D4AF37]"></i> +1 (555) 872-2364</li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="text-xs tracking-[0.2em] text-[#7C828C] mb-5">HOURS</p>
+      <ul class="space-y-3 text-sm text-[#9CA3AF]">
+        <li class="flex justify-between"><span>Mon – Fri</span><span class="text-[#E5C158]">9:00 – 21:00</span></li>
+        <li class="flex justify-between"><span>Saturday</span><span class="text-[#E5C158]">10:00 – 22:00</span></li>
+        <li class="flex justify-between"><span>Sunday</span><span class="text-[#E5C158]">10:00 – 18:00</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 border-t hairline pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+    <p class="text-xs text-[#5B616B] text-center md:text-left">© 2026 Aurelia Spa. All rights reserved. Prices are estimates and may vary by therapist and season.</p>
+    <div class="flex gap-6 text-xs text-[#5B616B]">
+      <a href="#" class="hover:text-[#9CA3AF] transition">Privacy Policy</a>
+      <a href="#" class="hover:text-[#9CA3AF] transition">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuToggle.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+    const icon = menuToggle.querySelector('i');
+    const isOpen = mobileMenu.classList.contains('open');
+    icon.setAttribute('data-lucide', isOpen ? 'x' : 'menu');
+    lucide.createIcons();
+  });
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      const icon = menuToggle.querySelector('i');
+      icon.setAttribute('data-lucide', 'menu');
+      lucide.createIcons();
+    });
+  });
+
+  // Copy BTC address
+  function copyBtcAddress() {
+    const address = document.getElementById('btcAddress').textContent.trim();
+    navigator.clipboard.writeText(address).then(() => {
+      const label = document.getElementById('copyLabel');
+      const original = label.textContent;
+      label.textContent = 'Copied!';
+      setTimeout(() => { label.textContent = original; }, 2000);
+    }).catch(() => {
+      const textarea = document.createElement('textarea');
+      textarea.value = address;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      const label = document.getElementById('copyLabel');
+      const original = label.textContent;
+      label.textContent = 'Copied!';
+      setTimeout(() => { label.textContent = original; }, 2000);
+    });
+  }
+
+  // Booking form — Web3Forms AJAX submission
+  const form = document.getElementById('bookingForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const submitLabel = document.getElementById('submitLabel');
+  const formResult = document.getElementById('formResult');
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    submitBtn.disabled = true;
+    submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+    submitLabel.innerHTML = 'Sending<span class="inline-block ml-1 animate-pulse">…</span>';
+
+    const formData = new FormData(form);
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: json,
+      });
+      const result = await response.json();
+
+      formResult.classList.remove('hidden');
+
+      if (result.success) {
+        formResult.innerHTML = '<span class="inline-flex items-center gap-2 text-[#E5C158]"><i data-lucide="check-circle" class="w-4 h-4"></i> Thank you — your request has been received. We will confirm by email shortly.</span>';
+        form.reset();
+      } else {
+        formResult.innerHTML = '<span class="text-red-400">Something went wrong. Please try again or email us directly.</span>';
+      }
+      lucide.createIcons();
+    } catch (error) {
+      formResult.classList.remove('hidden');
+      formResult.innerHTML = '<span class="text-red-400">Network error. Please check your connection and try again.</span>';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+      submitLabel.textContent = 'Submit Booking Request';
+    }
+  });
+
+  // Sticky navbar shadow on scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) {
+      navbar.classList.add('shadow-lg', 'shadow-black/30');
+    } else {
+      navbar.classList.remove('shadow-lg', 'shadow-black/30');
+    }
+  });
+</script>
+
+</body>
+</html>
