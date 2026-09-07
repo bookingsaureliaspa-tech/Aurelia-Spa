@@ -601,11 +601,12 @@ function BookingView({ selected, toggleService, go, date, setDate, time, setTime
   );
 }
 
-//* ============================================================
+/* ============================================================
    BITCOIN INSTRUCTIONS ACCORDION
    ============================================================ */
 function BitcoinInstructions() {
   const [open, setOpen] = useState(false);
+
   return (
     <div className="card-surface rounded-md overflow-hidden">
       <button 
@@ -636,10 +637,10 @@ function BitcoinInstructions() {
                 Cash App (Fastest in the US)
               </div>
               <ol className="list-decimal list-inside space-y-1" style={{ color: 'var(--text-secondary)' }}>
-                <li>Open Cash App and tap the <strong>Money / Bitcoin</strong> tab.</li>
-                <li>Tap <strong>Buy BTC</strong>, enter your booking amount, and confirm.</li>
-                <li>Tap <strong>Send</strong>, select Bitcoin, and paste our Wallet Address above.</li>
-                <li>Confirm transfer and save your transaction note/reference.</li>
+                <li>Open Cash App and tap the Money / Bitcoin tab.</li>
+                <li>Tap Buy BTC, enter your booking amount, and confirm.</li>
+                <li>Tap Send, select Bitcoin, and paste our Wallet Address above.</li>
+                <li>Confirm transfer and save your transaction note or reference.</li>
               </ol>
             </div>
 
@@ -650,9 +651,9 @@ function BitcoinInstructions() {
                 PayPal or Venmo
               </div>
               <ol className="list-decimal list-inside space-y-1" style={{ color: 'var(--text-secondary)' }}>
-                <li>Go to <strong>Crypto / Finances</strong> and tap <strong>Buy Bitcoin</strong>.</li>
+                <li>Go to Crypto / Finances and tap Buy Bitcoin.</li>
                 <li>Enter your booking total and complete the purchase.</li>
-                <li>Tap <strong>Transfer / Send</strong>, select "External Address", and paste our Wallet Address.</li>
+                <li>Tap Transfer / Send, select External Address, and paste our Wallet Address.</li>
                 <li>Confirm the transaction.</li>
               </ol>
             </div>
@@ -665,13 +666,13 @@ function BitcoinInstructions() {
               </div>
               <ol className="list-decimal list-inside space-y-1" style={{ color: 'var(--text-secondary)' }}>
                 <li>Buy BTC on your preferred exchange app.</li>
-                <li>Go to <strong>Withdraw / Send Crypto</strong> and select Bitcoin (BTC).</li>
+                <li>Go to Withdraw / Send Crypto and select Bitcoin (BTC).</li>
                 <li>Paste our Wallet Address, double-check it, and confirm withdrawal.</li>
               </ol>
             </div>
 
             <p className="text-xs pt-1 italic" style={{ color: 'var(--text-muted)' }}>
-              Note: Bitcoin network transfers take ~5–15 minutes to process. Once sent, complete your booking request below!
+              Note: Bitcoin network transfers take approximately 5 to 15 minutes to process. Once sent, complete your booking request below!
             </p>
           </div>
         </div>
