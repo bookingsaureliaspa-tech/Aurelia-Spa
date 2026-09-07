@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Aurelia Spa — Elite Wellness Sanctuary</title>
 <meta name="description" content="Aurelia Spa — an elite wellness sanctuary offering bespoke massage, facial, hydrotherapy and private suite experiences." />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230D0F12'/%3E%3Cg fill='%23D4AF37'%3E%3Cellipse cx='32' cy='40' rx='6' ry='14'/%3E%3Cellipse cx='22' cy='42' rx='6' ry='14' transform='rotate(-35 22 42)'/%3E%3Cellipse cx='42' cy='42' rx='6' ry='14' transform='rotate(35 42 42)'/%3E%3Cellipse cx='14' cy='47' rx='5' ry='11' transform='rotate(-58 14 47)'/%3E%3Cellipse cx='50' cy='47' rx='5' ry='11' transform='rotate(58 50 47)'/%3E%3Ccircle cx='32' cy='47' r='4'/%3E%3C/g%3E%3Cpath d='M14 52 Q32 60 50 52' stroke='%23D4AF37' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -600,16 +601,94 @@ function BookingView({ selected, toggleService, go, date, setDate, time, setTime
   );
 }
 
+//* ============================================================
+   BITCOIN INSTRUCTIONS ACCORDION
+   ============================================================ */
+function BitcoinInstructions() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="card-surface rounded-md overflow-hidden">
+      <button 
+        type="button" 
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between gap-3 px-6 py-5 text-left"
+      >
+        <span className="flex items-center gap-3">
+          <span className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ background: 'var(--border)' }}>
+            <BitcoinIcon size={16} style={{ color: 'var(--accent)' }} />
+          </span>
+          <span className="font-serif text-lg">How to Purchase &amp; Send Bitcoin</span>
+        </span>
+        <ChevronRight size={18} style={{ color: 'var(--accent)', transform: open ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform .3s ease' }} />
+      </button>
+
+      <div style={{ maxHeight: open ? '1200px' : '0px', overflow: 'hidden', transition: 'max-height .4s ease' }}>
+        <div className="px-6 pb-6 border-t" style={{ borderColor: 'var(--border)' }}>
+          <div id="btc-instructions" className="pt-5 space-y-4 text-sm">
+            <p className="font-medium text-amber-400 mb-2">
+              New to Crypto? Here is how to easily purchase and send Bitcoin using everyday payment apps:
+            </p>
+
+            {/* Cash App Instructions */}
+            <div className="border rounded-lg p-3 space-y-2" style={{ borderColor: 'var(--border)', background: 'var(--card-bg)' }}>
+              <div className="flex items-center gap-2 font-semibold text-emerald-400">
+                <span className="px-2 py-0.5 bg-emerald-500/10 rounded text-xs">Method 1</span>
+                Cash App (Fastest in the US)
+              </div>
+              <ol className="list-decimal list-inside space-y-1" style={{ color: 'var(--text-secondary)' }}>
+                <li>Open Cash App and tap the <strong>Money / Bitcoin</strong> tab.</li>
+                <li>Tap <strong>Buy BTC</strong>, enter your booking amount, and confirm.</li>
+                <li>Tap <strong>Send</strong>, select Bitcoin, and paste our Wallet Address above.</li>
+                <li>Confirm transfer and save your transaction note/reference.</li>
+              </ol>
+            </div>
+
+            {/* PayPal / Venmo Instructions */}
+            <div className="border rounded-lg p-3 space-y-2" style={{ borderColor: 'var(--border)', background: 'var(--card-bg)' }}>
+              <div className="flex items-center gap-2 font-semibold text-blue-400">
+                <span className="px-2 py-0.5 bg-blue-500/10 rounded text-xs">Method 2</span>
+                PayPal or Venmo
+              </div>
+              <ol className="list-decimal list-inside space-y-1" style={{ color: 'var(--text-secondary)' }}>
+                <li>Go to <strong>Crypto / Finances</strong> and tap <strong>Buy Bitcoin</strong>.</li>
+                <li>Enter your booking total and complete the purchase.</li>
+                <li>Tap <strong>Transfer / Send</strong>, select "External Address", and paste our Wallet Address.</li>
+                <li>Confirm the transaction.</li>
+              </ol>
+            </div>
+
+            {/* Exchanges Instructions */}
+            <div className="border rounded-lg p-3 space-y-2" style={{ borderColor: 'var(--border)', background: 'var(--card-bg)' }}>
+              <div className="flex items-center gap-2 font-semibold text-purple-400">
+                <span className="px-2 py-0.5 bg-purple-500/10 rounded text-xs">Method 3</span>
+                Coinbase, Binance, or Kraken
+              </div>
+              <ol className="list-decimal list-inside space-y-1" style={{ color: 'var(--text-secondary)' }}>
+                <li>Buy BTC on your preferred exchange app.</li>
+                <li>Go to <strong>Withdraw / Send Crypto</strong> and select Bitcoin (BTC).</li>
+                <li>Paste our Wallet Address, double-check it, and confirm withdrawal.</li>
+              </ol>
+            </div>
+
+            <p className="text-xs pt-1 italic" style={{ color: 'var(--text-muted)' }}>
+              Note: Bitcoin network transfers take ~5–15 minutes to process. Once sent, complete your booking request below!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ============================================================
    CHECKOUT VIEW
    ============================================================ */
 function CheckoutView({ selected, go, date, time, resetBooking }) {
   const selectedServices = SERVICES.filter((s) => selected.has(s.id));
   const total = selectedServices.reduce((sum, s) => sum + s.price, 0);
-  const [method, setMethod] = useState('card');
   const [copied, copy] = useCopy();
   const [status, setStatus] = useState('idle'); // idle | sending | success | error
-  const [card, setCard] = useState({ name: '', number: '', expiry: '', cvv: '' });
+  const [contact, setContact] = useState({ name: '', email: '', note: '' });
 
   if (selectedServices.length === 0 || !date || !time) {
     return (
@@ -627,10 +706,13 @@ function CheckoutView({ selected, go, date, time, resetBooking }) {
     try {
       const result = await submitToWeb3Forms({
         subject: 'New Booking Request — Aurelia Spa',
-        payment_method: method,
+        payment_method: 'Bitcoin',
+        name: contact.name || 'Guest',
+        email: contact.email,
         services: selectedServices.map((s) => s.name).join(', '),
-        date, time, total_price: '$' + total,
-        name: card.name || 'Guest',
+        date, time,
+        total_price: '$' + total,
+        transaction_note: contact.note || 'N/A',
       });
       if (result.success) {
         setStatus('success');
@@ -660,6 +742,7 @@ function CheckoutView({ selected, go, date, time, resetBooking }) {
       <div className="max-w-2xl mb-10">
         <p className="text-xs tracking-[0.25em] mb-4" style={{ color: 'var(--accent)' }}>Final Step</p>
         <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight">Checkout</h1>
+        <p className="mt-4" style={{ color: 'var(--text-muted)' }}>Aurelia Spa accepts Bitcoin for all bookings and deposits.</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -686,47 +769,31 @@ function CheckoutView({ selected, go, date, time, resetBooking }) {
         </div>
 
         <div className="lg:col-span-2 order-1 lg:order-2 space-y-6">
-          <div className="flex gap-3">
-            <button onClick={() => setMethod('card')} className="flex-1 rounded-sm py-3 text-sm font-semibold flex items-center justify-center gap-2 border transition"
-              style={{ borderColor: method === 'card' ? 'var(--accent)' : 'var(--border)', background: method === 'card' ? 'var(--border)' : 'transparent', color: method === 'card' ? 'var(--accent)' : 'var(--text-secondary)' }}>
-              <CreditCardIcon size={16} /> Credit Card
-            </button>
-            <button onClick={() => setMethod('bitcoin')} className="flex-1 rounded-sm py-3 text-sm font-semibold flex items-center justify-center gap-2 border transition"
-              style={{ borderColor: method === 'bitcoin' ? 'var(--accent)' : 'var(--border)', background: method === 'bitcoin' ? 'var(--border)' : 'transparent', color: method === 'bitcoin' ? 'var(--accent)' : 'var(--text-secondary)' }}>
-              <BitcoinIcon size={16} /> Bitcoin
-            </button>
-          </div>
+          <form onSubmit={handleConfirm} className="space-y-6">
 
-          <form onSubmit={handleConfirm} className="card-surface rounded-md p-6 md:p-8 space-y-6">
-            {method === 'card' ? (
-              <div className="space-y-5">
+            <div className="card-surface rounded-md p-6 md:p-8 space-y-5">
+              <h3 className="font-serif text-lg flex items-center gap-2"><ShieldIcon size={17} style={{ color: 'var(--accent)' }} />Your Details</h3>
+              <div className="grid sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="field-label">NAME ON CARD</label>
-                  <input required value={card.name} onChange={(e) => setCard({ ...card, name: e.target.value })}
+                  <label className="field-label">FULL NAME</label>
+                  <input required value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })}
                     placeholder="Jane Doe" className="w-full mt-2 rounded-sm px-4 py-3 text-sm" />
                 </div>
                 <div>
-                  <label className="field-label">CARD NUMBER</label>
-                  <input required maxLength="19" value={card.number} onChange={(e) => setCard({ ...card, number: e.target.value })}
-                    placeholder="4242 4242 4242 4242" className="w-full mt-2 rounded-sm px-4 py-3 text-sm" />
+                  <label className="field-label">EMAIL ADDRESS</label>
+                  <input required type="email" value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })}
+                    placeholder="jane@email.com" className="w-full mt-2 rounded-sm px-4 py-3 text-sm" />
                 </div>
-                <div className="grid grid-cols-2 gap-5">
-                  <div>
-                    <label className="field-label">EXPIRY</label>
-                    <input required value={card.expiry} onChange={(e) => setCard({ ...card, expiry: e.target.value })}
-                      placeholder="MM/YY" className="w-full mt-2 rounded-sm px-4 py-3 text-sm" />
-                  </div>
-                  <div>
-                    <label className="field-label">CVV</label>
-                    <input required maxLength="4" value={card.cvv} onChange={(e) => setCard({ ...card, cvv: e.target.value })}
-                      placeholder="123" className="w-full mt-2 rounded-sm px-4 py-3 text-sm" />
-                  </div>
-                </div>
-                <p className="text-xs flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
-                  <ShieldIcon size={13} /> Card details are for demo purposes and are not processed or stored.
-                </p>
               </div>
-            ) : (
+              <div>
+                <label className="field-label">TRANSACTION HASH / NOTE (OPTIONAL)</label>
+                <input value={contact.note} onChange={(e) => setContact({ ...contact, note: e.target.value })}
+                  placeholder="Paste your BTC transaction hash once sent, or add a note" className="w-full mt-2 rounded-sm px-4 py-3 text-sm" />
+              </div>
+            </div>
+
+            <div className="card-surface rounded-md p-6 md:p-8">
+              <h3 className="font-serif text-lg mb-6 flex items-center gap-2"><BitcoinIcon size={17} style={{ color: 'var(--accent)' }} />Pay with Bitcoin</h3>
               <div className="grid sm:grid-cols-2 gap-8 items-center">
                 <div className="btc-qr-frame mx-auto">
                   <img src="BTC_qr-code.svg" alt="Bitcoin wallet QR code" className="w-40 h-40" />
@@ -745,7 +812,9 @@ function CheckoutView({ selected, go, date, time, resetBooking }) {
                   </p>
                 </div>
               </div>
-            )}
+            </div>
+
+            <BitcoinInstructions />
 
             {status === 'error' && (
               <p className="text-sm flex items-center gap-2 text-red-400"><AlertIcon size={15} /> Something went wrong sending your request. Please try again.</p>
